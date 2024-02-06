@@ -14,8 +14,17 @@ class BaseModel:
         self.__name = name
         if type(my_number) != int:
             raise TypeError("number must be an integer")
-        elif value <= 0:
-            raise ValueError("width must be >= 0")
+        elif my_number <= 0:
+            raise ValueError("number must be >= 0")
         else:
             self.__my_number = my_number
-        self.__name = name
+
+    @property
+    def name(self):
+        """This is the getter of the name property"""
+        return self.__name
+
+    @name.setter
+    def name(self, input):
+        """This is the setter of the name porperty"""
+        self.__name = input
