@@ -15,6 +15,10 @@ class BaseModel:
     def __init__(self, *args, **kwargs):
         """This runs anytime an object is instantiated"""
 
+        self.id = str(uuid.uuid4())
+        self.created_at = dateTime.now()
+        self.updated_at = dateTime.now()
+
         if kwargs and len(kwargs) != 0:
             for key, value in kwargs.items():
                 if key == "created_at":
@@ -26,9 +30,6 @@ class BaseModel:
                 else:
                     self.__dict__[key] = kwargs[key]
         else:
-            self.id = str(uuid.uuid4())
-            self.created_at = dateTime.now()
-            self.updated_at = dateTime.now()
             models.storage.new(self)
 
     def __str__(self):
