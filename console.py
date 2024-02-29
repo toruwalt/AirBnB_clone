@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import cmd
+from models.base_model import BaseModel
 
 """the entry point of the command interpreter"""
 
@@ -23,7 +24,8 @@ class HBNBCommand(cmd.Cmd):
         print("Quit command that exit the program\n")
 
     def do_create(self, line):
-        pass
+        if not line:
+            print("** class name missing **")
 
     def help_create(self):
         print("Creates a new instance of BaseModel,\
