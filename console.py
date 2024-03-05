@@ -57,14 +57,20 @@ class HBNBCommand(cmd.Cmd):
         elif args[0] not in HBNBCommand.all_classes:
             print("** class doesn't exist **")
         elif len(args) != 2:
-            pass
+            print("** instance id missing **")
         else:
             command = args[1]
+            key = "{}.{}".format(args[0], command)
             all_objs = storage.all()
-            for obj in all_objs:
+            if key in all_objs.keys():
+                obj = all_objs[key]
                 print(obj)
+            else:
+                print("** no instance found **")
+
 
     def emptyline(self):
+        """Outputs when the line is empty"""
         pass
 
 
