@@ -10,6 +10,7 @@ from models.engine.file_storage import FileStorage
 class HBNBCommand(cmd.Cmd):
     """Class that defines the interpreter"""
     prompt = '(hbnb) '
+    obj = ''
     all_classes = {"BaseModel"}
 
     def do_quit(self, line):
@@ -60,14 +61,8 @@ class HBNBCommand(cmd.Cmd):
         else:
             command = args[1]
             all_objs = storage.all()
-            for obj_id in all_objs.keys():
-                if command in all_objs:
-                    obj = all_objs[command]
-                    return obj
-            if obj:
+            for obj in all_objs:
                 print(obj)
-            else:
-                print("** no instance found **")
 
     def emptyline(self):
         pass
