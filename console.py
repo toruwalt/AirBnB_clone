@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+import re
 import cmd
 from models import storage
 from models.base_model import BaseModel
@@ -94,19 +95,16 @@ class HBNBCommand(cmd.Cmd):
         based or not on the class name"""
         all_in_list = []
         args = line.split()
-        all_objs = storage.all()
         if not line:
-            for objs in all_objs.items():
-                obj = all_objs[objs]
+            all_objs = storage.all()
+            for key in all_objs.keys():
+                obj = str(all_objs[key])
                 all_in_list.append(obj)
-                print(all_in_list)
+            print(all_in_list)
         elif args[0] not in HBNBCommand.all_classes:
             print("** class doesn't exist **")
         else:
-            command = args[1]
-            all_objs = storage.all()
-            for key in all_objs.keys():
-                print(all_objs[key])
+            print("Comeback when you have User, Review, Amenities, etc.")
 
     def emptyline(self):
         """Outputs when the line is empty"""
