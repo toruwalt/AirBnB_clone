@@ -106,6 +106,42 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("Comeback when you have User, Review, Amenities, etc.")
 
+    def help_all(self):
+        """Help doc for create function"""
+        print("Prints all string representation of all \
+                instances based or not on the class name.")
+
+    def do_update(self, line):
+        """Adds or updates attribute (save the change into the JSON file)."""
+        args = line.split()
+        if not line:
+            print("** class name missing **")
+        elif args[0] not in HBNBCommand.all_classes:
+            print("** class doesn't exist **")
+        elif len(args) == 1:
+            print("** instance id missing **")
+        elif len(args) == 2:
+            key = "{}.{}".format(args[0], args[1])
+            all_objs = storage.all()
+            if key not in all_objs.keys():
+                print("** no instance found **")
+            else:
+                print("** attribute name missing **")
+            return False
+        elif len(args) == 4:
+            print("** instance id missing **")
+            return False
+        else:
+            command = args[1]
+            key = "{}.{}".format(args[0], command)
+            all_objs = storage.all()
+            if key in all_objs.keys():
+                del all_objs[key]
+                storage.save()
+            else:
+                print("** no instance found **")
+
+
     def emptyline(self):
         """Outputs when the line is empty"""
         pass
