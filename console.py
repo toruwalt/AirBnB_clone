@@ -114,6 +114,7 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, line):
         """Adds or updates attribute (save the change into the JSON file)."""
         args = line.split()
+        all_objs = storage.all()
         if not line:
             print("** class name missing **")
         elif args[0] not in HBNBCommand.all_classes:
@@ -122,25 +123,18 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
         elif len(args) == 2:
             key = "{}.{}".format(args[0], args[1])
-            all_objs = storage.all()
             if key not in all_objs.keys():
                 print("** no instance found **")
             else:
                 print("** attribute name missing **")
             return False
-        elif len(args) == 4:
-            print("** instance id missing **")
-            return False
+        elif len(args) == 3:
+            print("** value missing **")
         else:
-            command = args[1]
-            key = "{}.{}".format(args[0], command)
-            all_objs = storage.all()
-            if key in all_objs.keys():
-                del all_objs[key]
-                storage.save()
-            else:
-                print("** no instance found **")
-
+            new_attr = args[3][1:-1]
+            key = "{}.{}".format(args[0], args[1])
+            setattr(all_objs[key],args[2],new_attr)
+            storage.save()
 
     def emptyline(self):
         """Outputs when the line is empty"""
