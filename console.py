@@ -3,7 +3,6 @@ import re
 import cmd
 from models import storage
 from models.base_model import BaseModel
-from models.user import User
 from models.engine.file_storage import FileStorage
 
 """the entry point of the command interpreter"""
@@ -12,7 +11,8 @@ from models.engine.file_storage import FileStorage
 class HBNBCommand(cmd.Cmd):
     """Class that defines the interpreter"""
     prompt = '(hbnb) '
-    all_classes = {"BaseModel", "User"}
+    obj = ''
+    all_classes = {"BaseModel"}
 
     def do_quit(self, line):
         """Quit command to exit the program\n"""
@@ -41,14 +41,9 @@ class HBNBCommand(cmd.Cmd):
         elif args[0] not in HBNBCommand.all_classes:
             print("** class doesn't exist **")
         else:
-            if "BaseModel" in args[0]:
-                line = BaseModel()
-                print(line.id)
-                storage.save()
-            if "User" in args[0]:
-                line = User()
-                print(line.id)
-                storage.save()
+            line = BaseModel()
+            print(line.id)
+            storage.save()
 
     def help_create(self):
         """Help doc for create function"""
@@ -65,14 +60,13 @@ class HBNBCommand(cmd.Cmd):
         elif len(args) != 2:
             print("** instance id missing **")
         else:
-            if "BaseModel" in args[0]:
-                command = args[1]
-                key = "{}.{}".format(args[0], command)
-                all_objs = storage.all()
-                if key in all_objs.keys():
-                    obj = all_objs[key]
-                    print(obj)
-                else:
+            command = args[1]
+            key = "{}.{}".format(args[0], command)
+            all_objs = storage.all()
+            if key in all_objs.keys():
+                obj = all_objs[key]
+                print(obj)
+            else:
                 print("** no instance found **")
 
     def do_destroy(self, line):
