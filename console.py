@@ -1,18 +1,17 @@
 #!/usr/bin/python3
+"""the entry point of the command interpreter"""
 import re
 import cmd
 from models import storage
 from models.base_model import BaseModel
+from models.user import User
 from models.engine.file_storage import FileStorage
-
-"""the entry point of the command interpreter"""
 
 
 class HBNBCommand(cmd.Cmd):
     """Class that defines the interpreter"""
     prompt = '(hbnb) '
-    obj = ''
-    all_classes = {"BaseModel"}
+    all_classes = {"BaseModel", "User"}
 
     def do_quit(self, line):
         """Quit command to exit the program\n"""
@@ -36,13 +35,11 @@ class HBNBCommand(cmd.Cmd):
         args = line.split()
         if not line:
             print("** class name missing **")
-        elif len(args) > 1:
-            pass
         elif args[0] not in HBNBCommand.all_classes:
             print("** class doesn't exist **")
         else:
-            line = BaseModel()
-            print(line.id)
+            new_create = eval(args[0])()
+            print(new_create.id)
             storage.save()
 
     def help_create(self):
@@ -57,7 +54,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         elif args[0] not in HBNBCommand.all_classes:
             print("** class doesn't exist **")
-        elif len(args) != 2:
+        elif len(args) < 2:
             print("** instance id missing **")
         else:
             command = args[1]
@@ -69,6 +66,11 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** no instance found **")
 
+    def help_show(self):
+        """Help doc for show function"""
+        print("Prints string of an instance based on the class name and id")
+
+
     def do_destroy(self, line):
         """Deletes an instance based on the class name and id
         (save the change into the JSON file).
@@ -78,7 +80,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         elif args[0] not in HBNBCommand.all_classes:
             print("** class doesn't exist **")
-        elif len(args) != 2:
+        elif len(args) < 2:
             print("** instance id missing **")
         else:
             command = args[1]
@@ -90,13 +92,17 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** no instance found **")
 
+    def help_destroy(self):
+        """Help doc for show function"""
+        print("Deletes an instance of class name")
+
     def do_all(self, line):
         """Prints all string representation of all instances
         based or not on the class name"""
         all_in_list = []
         args = line.split()
+        all_objs = storage.all()
         if not line:
-            all_objs = storage.all()
             for key in all_objs.keys():
                 obj = str(all_objs[key])
                 all_in_list.append(obj)
@@ -104,10 +110,17 @@ class HBNBCommand(cmd.Cmd):
         elif args[0] not in HBNBCommand.all_classes:
             print("** class doesn't exist **")
         else:
-            print("Comeback when you have User, Review, Amenities, etc.")
+            pattern = args[0]
+            for key in all_objs.keys():
+                this_match = re.search(pattern,key)
+                if this_match:
+                    obj = str(all_objs[key])
+                    all_in_list.append(obj)
+            print(all_in_list)
+
 
     def help_all(self):
-        """Help doc for create function"""
+        """Help doc for all function"""
         print("Prints all string representation of all \
                 instances based or not on the class name.")
 
@@ -136,7 +149,16 @@ class HBNBCommand(cmd.Cmd):
             setattr(all_objs[key],args[2],new_attr)
             storage.save()
 
+    def help_update(self):
+        """Help doc for update function"""
+        print("Adds or updates attribute")
+
+
     def emptyline(self):
+        """Outputs when the line is empty"""
+        pass
+
+    def default(self, line):
         """Outputs when the line is empty"""
         pass
 
