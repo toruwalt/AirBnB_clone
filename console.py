@@ -70,7 +70,6 @@ class HBNBCommand(cmd.Cmd):
         """Help doc for show function"""
         print("Prints string of an instance based on the class name and id")
 
-
     def do_destroy(self, line):
         """Deletes an instance based on the class name and id
         (save the change into the JSON file).
@@ -112,12 +111,11 @@ class HBNBCommand(cmd.Cmd):
         else:
             pattern = args[0]
             for key in all_objs.keys():
-                this_match = re.search(pattern,key)
+                this_match = re.search(pattern, key)
                 if this_match:
                     obj = str(all_objs[key])
                     all_in_list.append(obj)
             print(all_in_list)
-
 
     def help_all(self):
         """Help doc for all function"""
@@ -146,13 +144,12 @@ class HBNBCommand(cmd.Cmd):
         else:
             new_attr = args[3][1:-1]
             key = "{}.{}".format(args[0], args[1])
-            setattr(all_objs[key],args[2],new_attr)
+            setattr(all_objs[key], args[2], new_attr)
             storage.save()
 
     def help_update(self):
         """Help doc for update function"""
         print("Adds or updates attribute")
-
 
     def emptyline(self):
         """Outputs when the line is empty"""
