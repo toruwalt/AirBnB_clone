@@ -25,7 +25,7 @@ class HBNBCommand(cmd.Cmd):
             "Place",
             "Review"
             }
-
+    
     def do_quit(self, line):
         """Quit command to exit the program\n"""
         return True
@@ -96,6 +96,7 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
         else:
             command = args[1]
+            key = "{}.{}".format(args[0], command)
             key = "{}.{}".format(args[0], command)
             all_objs = storage.all()
             if key in all_objs.keys():
