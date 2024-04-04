@@ -13,6 +13,7 @@ class HBNBCommand(cmd.Cmd):
     """Class that defines the interpreter"""
     prompt = '(hbnb) '
     all_classes = {"BaseModel", "User"}
+    line = ""
 
     def do_quit(self, line):
         """Quit command to exit the program\n"""
@@ -41,14 +42,8 @@ class HBNBCommand(cmd.Cmd):
         elif args[0] not in HBNBCommand.all_classes:
             print("** class doesn't exist **")
         else:
-            if "BaseModel" in args[0]:
-                line = BaseModel()
-                print(line.id)
-                storage.save()
-            if "User" in args[0]:
-                line = User()
-                print(line.id)
-                storage.save()
+            HBNBCommand.to_create(args[0])
+            storage.save()
 
     def help_create(self):
         """Help doc for create function"""
@@ -73,7 +68,7 @@ class HBNBCommand(cmd.Cmd):
                     obj = all_objs[key]
                     print(obj)
                 else:
-                print("** no instance found **")
+                    print("** no instance found **")
 
     def do_destroy(self, line):
         """Deletes an instance based on the class name and id
@@ -145,6 +140,15 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """Outputs when the line is empty"""
         pass
+
+    def to_create(Model):
+        if Model == "BaseModel":
+            line = BaseModel()
+        elif Model == "User":
+            line == User()
+        print(line.id)
+        return line
+
 
 
 if __name__ == "__main__":
